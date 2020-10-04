@@ -18,7 +18,8 @@ Module.register('MMM-SystemStats', {
     useSyslog: false,
     thresholdCPUTemp: 75, // in configured units
     baseURLSyslog: 'http://127.0.0.1:8080/syslog',
-    label: 'textAndIcon'
+    label: 'textAndIcon',
+    mode: config.mode,
   },
   // Define required styles.
   getStyles: function() {
@@ -41,7 +42,9 @@ Module.register('MMM-SystemStats', {
 
   // Define start sequence
   start: function() {
-    Log.log('Starting module: ' + this.name);
+      Log.log('Starting module: ' + this.name);
+
+      this.sendSocketNotification('WRITETIME');
 
     // set locale
     moment.locale(this.config.language);

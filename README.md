@@ -52,6 +52,7 @@ modules: [
 			//header: 'System Stats', // This is optional
 			units: 'metric', // default, metric, imperial
 			view: 'textAndIcon',
+			mode: 'pi' // pi/mm
 		},
 	},
 ]
@@ -127,6 +128,10 @@ The following properties can be configured:
 			<td>URL base of <a href="https://github.com/paviro/MMM-syslog">MMM-syslog module</a>
 				<br><b>Default value:</b> <code>http://127.0.0.1:8080/syslog</code>
 			</td>
+		</tr>
+		<tr>
+			<td><code>mode</code></td>
+			<td>Show runtime of pi or MagicMirror</td>
 		</tr>
 	</tbody>
 </table>

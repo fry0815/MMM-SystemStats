@@ -21,6 +21,10 @@ module.exports = NodeHelper.create({
   socketNotificationReceived: function(notification, payload) {
     var self = this;
 
+      if (notification === 'WRITETIME') {
+          this.writeStartTime();
+      }
+
     if (notification === 'CONFIG') {
       this.config = payload;
       // first call
@@ -58,11 +62,19 @@ module.exports = NodeHelper.create({
         break;
     }
 
+      var uptime = '';
+      if (this.config.mode === 'mm') {
+          uptime = 'start.txt';
+      }
+      else {
+          uptime = '/proc/uptime';
+      }
+
     async.parallel([
       // get cpu temp
       async.apply(exec, temp_conv + ' /sys/class/thermal/thermal_zone0/temp'),
-      // get system load
-      async.apply(exec, 'cat /proc/loadavg'),
+        // get system load
+      async.apply(exec, 'cat ' + uptime),
       // get free ram in %
       async.apply(exec, "free | awk '/^Mem:/ {print $4*100/$2}'"),
       // get uptime
@@ -85,4 +97,8 @@ module.exports = NodeHelper.create({
 
   // http://unix.stackexchange.com/questions/69185/getting-cpu-usage-same-every-time/69194#69194
 
+    writeStartTime: function () {
+        var str = Date.now() + " > start.txt";
+        exec(str);
+    },
 });
